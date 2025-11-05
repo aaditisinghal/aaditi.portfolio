@@ -1,0 +1,861 @@
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Mail, Linkedin, Github, Award, Briefcase, GraduationCap, Code, ExternalLink, Filter, Sparkles } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import ProjectCard from '../components/portfolio/ProjectCard';
+import ExperienceCard from '../components/portfolio/ExperienceCard';
+import SkillsSection from '../components/portfolio/SkillsSection';
+
+export default function Home() {
+  const [activeFilter, setActiveFilter] = useState('all');
+  const { scrollYProgress } = useScroll();
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.8]);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  const projects = [
+    {
+      title: 'SafePay',
+      subtitle: 'AI Fraud Prevention System',
+      description: 'AI fraud "immune system" for payments with behavioral analytics, knowledge graphs, and real-time risk decisioning. Won KSU FinTech Hackathon + Most Loved Product.',
+      tags: ['Python', 'GNN', 'LNN', 'Plaid', 'Knowledge Graph'],
+      metrics: [
+        { label: 'accuracy', value: '99.2%' },
+        { label: 'speed', value: '<100ms' },
+        { label: 'prize', value: '$3,000' }
+      ],
+      badge: 'KSU Winner',
+      date: 'Jan 2025',
+      category: 'fintech',
+      gradient: 'from-emerald-500 to-teal-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/f2768a5fe_image.png'
+    },
+    {
+      title: 'BuildWise',
+      subtitle: 'NASA-Inspired Carbon-Aware AI SDK',
+      description: 'Combines memory, learning, and control to optimize every LLM request—reducing cost, carbon, and latency while maintaining quality. Features knowledge graph memory, neural policy learning, hardware-aware control, carbon receipts, and multi-provider support.',
+      tags: ['Python', 'NASA Patents', 'Knowledge Graph', 'Neural Networks', 'Carbon SDK'],
+      metrics: [
+        { label: 'carbon', value: '40% CO₂↓' },
+        { label: 'efficiency', value: '60% faster' },
+        { label: 'providers', value: 'OpenAI/Claude/Gemini' }
+      ],
+      badge: 'HackATL NASA Track',
+      date: 'Dec 2024',
+      category: 'sustainability',
+      gradient: 'from-blue-500 to-cyan-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/9332fb365_image.png'
+    },
+    {
+      title: 'HivePath AI',
+      subtitle: 'Self-Healing Logistics Platform',
+      description: 'Living digital nervous system for logistics with swarm multimodal AI agents, 3 GNNs, and computer vision for adaptive routing. Most loved project at HackHarvard.',
+      tags: ['Python', 'GNN', 'OR-Tools', 'OpenCV', 'BLIP'],
+      metrics: [
+        { label: 'speed', value: '0.4s inference' },
+        { label: 'improvement', value: '60% faster' },
+        { label: 'carbon', value: 'Carbon-aware' }
+      ],
+      badge: 'HackHarvard',
+      date: 'Oct 2024',
+      category: 'logistics',
+      gradient: 'from-orange-500 to-red-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/90bfc2bd4_image.png'
+    },
+    {
+      title: 'LovedOnes',
+      subtitle: 'AI Alzheimer\'s Care Platform',
+      description: 'Comprehensive AI platform with face recognition (96% accuracy), memory companion, emergency SOS (99.2% reliability), and neural networks for progression analysis.',
+      tags: ['Python', 'Neural Networks', 'OpenCV', 'Q-Learning', 'VAPI'],
+      metrics: [
+        { label: 'faceID', value: '96%' },
+        { label: 'sos', value: '99.2%' },
+        { label: 'memory', value: '47% improvement' }
+      ],
+      badge: 'HackGT Finalist',
+      date: 'Oct 2024',
+      category: 'healthcare',
+      gradient: 'from-pink-500 to-rose-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/685b6529d_image.png'
+    },
+    {
+      title: 'NutriGirl AI',
+      subtitle: 'PCOS Health Companion',
+      description: 'A women-centric health copilot that analyzes blood reports, tracks nutrition, and gives voice-guided exercise form feedback—all tuned for PCOS/PCOD management. Features smart lab analysis for instant hormone insights, live food tracking with PCOS-friendly picks, weekly AI check-ins via automated voice calls, pose detection with GPT-Vision feedback for safer workouts, and doctor-ready PDF reports.',
+      tags: ['Python', 'GPT-Vision', 'VAPI', 'Pose Detection', 'ML'],
+      metrics: [
+        { label: 'health', value: 'PCOS-focused' },
+        { label: 'features', value: '5 AI tools' },
+        { label: 'winner', value: '2nd Overall' }
+      ],
+      badge: 'HackHer 2nd Overall',
+      date: 'Oct 2025',
+      category: 'healthcare',
+      gradient: 'from-purple-500 to-pink-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/13ccc71be_image.png'
+    },
+    {
+      title: 'EcoAI',
+      subtitle: 'Carbon-Conscious AI Platform',
+      description: 'Production SDK cutting AI carbon by 20-40% with prompt compression, context pruning, carbon-aware routing, and real-time carbon receipts. HackMIT 2025 Winner.',
+      tags: ['Python', 'TensorFlow', 'Flask', 'CodeCarbon', 'Zeus'],
+      metrics: [
+        { label: 'tokens', value: '45%↓' },
+        { label: 'quality', value: '≥95%' },
+        { label: 'carbon', value: '20-40% CO₂↓' }
+      ],
+      badge: 'HackMIT Winner',
+      date: 'Sep 2025',
+      category: 'sustainability',
+      gradient: 'from-green-500 to-emerald-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/7644fe4d7_image.png'
+    },
+    {
+      title: 'ProfitWise',
+      subtitle: 'AI Finance Copilot',
+      description: 'Co-founded AI finance platform automating bookkeeping, cash flow forecasting, and financial insights for SMBs. Currently in private preview with pilot customers.',
+      tags: ['Python', 'FastAPI', 'Next.js', 'PostgreSQL', 'GPT-4'],
+      metrics: [
+        { label: 'stage', value: 'Private Preview' },
+        { label: 'accuracy', value: '95%+' },
+        { label: 'role', value: 'Co-Founder' }
+      ],
+      badge: 'Current Startup',
+      date: 'Jul 2025 - Present',
+      category: 'fintech',
+      gradient: 'from-indigo-500 to-purple-500'
+    },
+    {
+      title: 'MetabolX',
+      subtitle: 'Precision Medicine Digital Twin',
+      description: 'AI platform analyzing 20K+ metabolite samples with 97.2% accuracy for personalized medication ranking and digital twin health simulation.',
+      tags: ['Python', 'XGBoost', 'TensorFlow', 'Flask', 'SHAP'],
+      metrics: [
+        { label: 'accuracy', value: '97.2%' },
+        { label: 'speed', value: '<2s' },
+        { label: 'samples', value: '20K+' }
+      ],
+      badge: 'HackPrinceton',
+      date: 'Mar 2025',
+      category: 'healthcare',
+      gradient: 'from-violet-500 to-purple-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/e6c2aed85_image.png'
+    },
+    {
+      title: 'NutriLens AR',
+      subtitle: 'Snap Spectacles Nutrition App',
+      description: 'Real-time AR nutrition overlay for Snap Spectacles with voice commands, GPT-4 analysis, and live dashboard sync. Built in 48 hours.',
+      tags: ['Lens Studio', 'JavaScript', 'GPT-4', 'WebSocket', 'MongoDB'],
+      metrics: [
+        { label: 'speed', value: 'Real-time' },
+        { label: 'platform', value: 'Spectacles' },
+        { label: 'time', value: '48hrs' }
+      ],
+      badge: 'ImmerseGT Spotlight',
+      date: 'Jan 2025',
+      category: 'ar',
+      gradient: 'from-fuchsia-500 to-pink-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/21a5b55ca_image.png'
+    },
+    {
+      title: 'Aarolic',
+      subtitle: 'Healthcare AI Platform',
+      description: 'iOS healthcare app with AI pre-diagnosis, smart doctor recommendations, e-prescriptions, and integrated insurance. Built for streamlined patient care.',
+      tags: ['Swift', 'SwiftUI', 'GenAI', 'Firebase', 'HIPAA'],
+      metrics: [
+        { label: 'encryption', value: 'End-to-end' },
+        { label: 'compliance', value: 'HIPAA' },
+        { label: 'platform', value: 'iOS' }
+      ],
+      badge: 'Hacklytics 2025',
+      date: 'Feb 2025',
+      category: 'healthcare',
+      gradient: 'from-cyan-500 to-blue-500',
+      image: 'https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/6a318f8ab_image.png'
+    }
+  ];
+
+  const experiences = [
+    {
+      title: 'Research in Advanced Machine Unlearning Algorithms',
+      role: 'Research Lead (Publication-Oriented)',
+      location: 'Atlanta, GA, USA',
+      date: 'December 2024 - Present',
+      description: 'Machine Unlearning: Algorithms for Selective Forgetting in Neural Networks with Minimal Performance Degradation',
+      highlights: [
+        'Designed selective forgetting algorithms for GDPR-style "right to erasure" compliance by leveraging influence functions, parameter isolation, and Fisher-based methods, ensuring minimal model accuracy loss (≤3%).',
+        'Benchmarked state-of-the-art unlearning techniques on healthcare and finance datasets by creating a unified evaluation suite, achieving up to 97% baseline accuracy retention while guaranteeing robust data deletion.',
+        'Engineered scalable unlearning workflows by optimizing algorithmic efficiency and system integration, extending real-world applicability in healthcare and financial AI systems.',
+        'Developed reproducible performance metrics to measure forgetting efficacy, robustness, and system overhead, advancing privacy-aware AI deployment and contributing toward a journal manuscript.'
+      ],
+      gradient: 'from-purple-500 to-indigo-500'
+    },
+    {
+      title: 'Undergraduate Research',
+      role: 'PI: Dr. Jonathan Sylvester',
+      location: 'Atlanta, GA, USA',
+      date: 'January 2025 - May 2025',
+      description: 'Monogamous behavior influenced by increased stress in the Convict cichlid',
+      highlights: [
+        'Conducted developmental neurobiology research on convict cichlids to explore how stress-induced amygdala development, marked by dlx2 and nkx2.1 expression in the subpallium, correlates with monogamous behavior using gene expression analysis and in situ hybridization.',
+        'Developed NeuroQuantify, a Python-based image analysis tool using OpenCV, scikit-image, and TensorFlow to detect & quantify dlx2 expression from in situ images. Trained neural networks, automate biological analysis, and visualize results using Matplotlib.'
+      ],
+      gradient: 'from-pink-500 to-rose-500'
+    }
+  ];
+
+  const filteredProjects = activeFilter === 'all' 
+    ? projects 
+    : projects.filter(p => p.category === activeFilter);
+
+  const filters = [
+    { id: 'all', label: 'All Projects' },
+    { id: 'fintech', label: 'FinTech' },
+    { id: 'healthcare', label: 'Healthcare' },
+    { id: 'sustainability', label: 'Sustainability' },
+    { id: 'logistics', label: 'Logistics' },
+    { id: 'ar', label: 'AR/VR' }
+  ];
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-black via-purple-950 to-black relative overflow-hidden">
+      {/* Cursor glow effect */}
+      <div 
+        className="pointer-events-none fixed inset-0 z-50 transition-opacity duration-300"
+        style={{
+          background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(168, 85, 247, 0.08), transparent 40%)`
+        }}
+      />
+
+      {/* Animated background effects */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        {/* Purple ribbons background image */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 2 }}
+          className="absolute inset-0"
+        >
+          <img 
+            src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/8e2ae640f_Gemini_Generated_Image_3u1imt3u1imt3u1i.png"
+            alt=""
+            className="w-full h-full object-cover opacity-20 mix-blend-screen animate-slow-drift"
+          />
+        </motion.div>
+        
+        {/* Enhanced gradient blobs with pulse */}
+        <div className="absolute top-0 left-0 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob-pulse"></div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-indigo-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob-pulse animation-delay-2000"></div>
+        <div className="absolute bottom-0 left-1/2 w-96 h-96 bg-violet-600 rounded-full mix-blend-multiply filter blur-3xl opacity-10 animate-blob-pulse animation-delay-4000"></div>
+        
+        {/* Floating orbs */}
+        <div className="orb orb-1"></div>
+        <div className="orb orb-2"></div>
+        <div className="orb orb-3"></div>
+        
+        {/* Enhanced sparkles */}
+        {[...Array(20)].map((_, i) => (
+          <div key={i} className={`sparkle sparkle-${i + 1}`}></div>
+        ))}
+      </div>
+
+      {/* Hero Section */}
+      <motion.section 
+        style={{ opacity, scale }}
+        className="relative min-h-screen flex items-center justify-center px-4 md:px-8"
+      >
+        {/* Decorative corner elements with animation */}
+        <motion.div 
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="absolute top-8 left-8 w-20 h-20 border-t-2 border-l-2 border-purple-400/30 rounded-tl-3xl corner-ornament"
+        >
+          <div className="absolute -top-1 -left-1 w-3 h-3 rounded-full bg-purple-400/50 animate-pulse"></div>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="absolute top-8 right-8 w-20 h-20 border-t-2 border-r-2 border-purple-400/30 rounded-tr-3xl corner-ornament"
+        >
+          <div className="absolute -top-1 -right-1 w-3 h-3 rounded-full bg-purple-400/50 animate-pulse animation-delay-500"></div>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="absolute bottom-8 left-8 w-20 h-20 border-b-2 border-l-2 border-purple-400/30 rounded-bl-3xl corner-ornament"
+        >
+          <div className="absolute -bottom-1 -left-1 w-3 h-3 rounded-full bg-purple-400/50 animate-pulse animation-delay-1000"></div>
+        </motion.div>
+        <motion.div 
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, delay: 0.5 }}
+          className="absolute bottom-8 right-8 w-20 h-20 border-b-2 border-r-2 border-purple-400/30 rounded-br-3xl corner-ornament"
+        >
+          <div className="absolute -bottom-1 -right-1 w-3 h-3 rounded-full bg-purple-400/50 animate-pulse animation-delay-1500"></div>
+        </motion.div>
+        
+        <div className="max-w-7xl mx-auto w-full">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
+            {/* Left side - Text Content */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8 }}
+              className="flex flex-col items-center md:items-start md:pl-8"
+            >
+              {/* Elegant ornamental line */}
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1, delay: 0.6 }}
+                className="flex items-center mb-8"
+              >
+                <div className="h-px w-20 bg-gradient-to-r from-transparent via-purple-400 to-purple-400 ornamental-line"></div>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                >
+                  <Sparkles className="w-6 h-6 text-purple-400 mx-4 drop-shadow-[0_0_8px_rgba(168,85,247,0.8)]" />
+                </motion.div>
+                <div className="h-px w-20 bg-gradient-to-l from-transparent via-purple-400 to-purple-400 ornamental-line"></div>
+              </motion.div>
+              
+              <motion.h1 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.7 }}
+                className="text-5xl md:text-7xl font-bold mb-4 tracking-tight bg-gradient-to-r from-white via-purple-200 to-white bg-clip-text text-transparent text-center md:text-left relative"
+              >
+                Aaditi Singhal
+                <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg blur-2xl opacity-20 -z-10"></div>
+              </motion.h1>
+
+              <motion.p 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+                className="text-lg md:text-xl text-purple-200 mb-8 leading-relaxed text-center md:text-left max-w-xl backdrop-blur-sm"
+              >
+                Co-Founder @ProfitWise | HackMIT Winner | Full Stack Developer, AI/ML focused | Presidential Scholar at Georgia State University | 4x Hackathon Winner | 3 Published Papers
+              </motion.p>
+
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.9 }}
+                className="flex flex-wrap gap-4 mb-12 justify-center md:justify-start"
+              >
+                <a href="mailto:asinghal6@student.gsu.edu">
+                  <Button className="group bg-purple-600/20 backdrop-blur-md hover:bg-purple-600/40 text-white border border-purple-400/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 relative overflow-hidden">
+                    <span className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/50 to-purple-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
+                    <Mail className="w-5 h-5 mr-2 relative z-10" />
+                    <span className="relative z-10">Email</span>
+                  </Button>
+                </a>
+                <a href="https://www.linkedin.com/in/aaditi-singhal-4b30b322b/" target="_blank" rel="noopener noreferrer">
+                  <Button className="group bg-purple-600/20 backdrop-blur-md hover:bg-purple-600/40 text-white border border-purple-400/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 relative overflow-hidden">
+                    <span className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/50 to-purple-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
+                    <Linkedin className="w-5 h-5 mr-2 relative z-10" />
+                    <span className="relative z-10">LinkedIn</span>
+                  </Button>
+                </a>
+                <a href="https://github.com/aaditisinghal" target="_blank" rel="noopener noreferrer">
+                  <Button className="group bg-purple-600/20 backdrop-blur-md hover:bg-purple-600/40 text-white border border-purple-400/30 transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 relative overflow-hidden">
+                    <span className="absolute inset-0 bg-gradient-to-r from-purple-600/0 via-purple-600/50 to-purple-600/0 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></span>
+                    <Github className="w-5 h-5 mr-2 relative z-10" />
+                    <span className="relative z-10">GitHub</span>
+                  </Button>
+                </a>
+              </motion.div>
+
+              {/* Elegant ornamental line */}
+              <motion.div 
+                initial={{ scaleX: 0 }}
+                animate={{ scaleX: 1 }}
+                transition={{ duration: 1, delay: 1 }}
+                className="flex items-center"
+              >
+                <div className="h-px w-20 bg-gradient-to-r from-transparent via-purple-400 to-purple-400 ornamental-line"></div>
+                <div className="w-2 h-2 rounded-full bg-purple-400 mx-4 animate-pulse shadow-[0_0_10px_rgba(168,85,247,0.8)]"></div>
+                <div className="h-px w-20 bg-gradient-to-l from-transparent via-purple-400 to-purple-400 ornamental-line"></div>
+              </motion.div>
+            </motion.div>
+
+            {/* Right side - Profile Image with enhanced effects */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="flex justify-center md:justify-end"
+            >
+              <div className="relative group">
+                {/* Multiple layered glows */}
+                <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-purple-500 rounded-3xl blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 animate-pulse-slow"></div>
+                <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 rounded-3xl blur-2xl opacity-30 group-hover:opacity-50 transition-opacity duration-500"></div>
+                
+                {/* Decorative frame elements */}
+                <div className="absolute -top-4 -left-4 w-24 h-24 border-t-2 border-l-2 border-purple-400/40 rounded-tl-3xl group-hover:border-purple-400/60 transition-colors"></div>
+                <div className="absolute -top-4 -right-4 w-24 h-24 border-t-2 border-r-2 border-purple-400/40 rounded-tr-3xl group-hover:border-purple-400/60 transition-colors"></div>
+                <div className="absolute -bottom-4 -left-4 w-24 h-24 border-b-2 border-l-2 border-purple-400/40 rounded-bl-3xl group-hover:border-purple-400/60 transition-colors"></div>
+                <div className="absolute -bottom-4 -right-4 w-24 h-24 border-b-2 border-r-2 border-purple-400/40 rounded-br-3xl group-hover:border-purple-400/60 transition-colors"></div>
+                
+                {/* Image container */}
+                <div className="relative rounded-3xl overflow-hidden border-4 border-purple-400/30 shadow-2xl hover:border-purple-400/50 transition-all duration-500 backdrop-blur-sm">
+                  <img 
+                    src="https://qtrypzzcjebvfcihiynt.supabase.co/storage/v1/object/public/base44-prod/public/69068bfd0c07b79402eef7f3/b93b1630b_IMG_0503.jpg"
+                    alt="Aaditi Singhal"
+                    className="w-80 h-96 md:w-96 md:h-[500px] object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                  
+                  {/* Enhanced gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-900/50 via-purple-900/10 to-transparent"></div>
+                  
+                  {/* Shimmer effect */}
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1500"></div>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* Education & Awards Section */}
+      <section className="relative py-24 px-4 md:px-8">
+        {/* Elegant section divider */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <div className="h-px w-32 bg-gradient-to-r from-transparent to-purple-400/50"></div>
+          <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+          <div className="h-px w-32 bg-gradient-to-l from-transparent to-purple-400/50"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-3 mb-12">
+              <GraduationCap className="w-8 h-8 text-purple-400" />
+              <h2 className="text-4xl md:text-5xl font-bold text-white">Education</h2>
+            </div>
+
+            <div className="bg-black/40 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-purple-500/20 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500">
+              <div className="flex flex-col md:flex-row justify-between items-start mb-6">
+                <div>
+                  <h3 className="text-3xl font-bold text-white mb-2">Georgia State University</h3>
+                  <p className="text-xl text-purple-200">Bachelor in Computer Science</p>
+                  <p className="text-lg text-purple-300 mt-2">Presidential Scholar | Honors Student | GPA: 4.3</p>
+                </div>
+                <div className="text-right mt-4 md:mt-0">
+                  <p className="text-purple-200">Atlanta, GA, USA</p>
+                  <p className="text-purple-300">Expected Graduation: May 2027</p>
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-white mb-3">Coursework</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['Data Structures & Algorithms', 'Object-Oriented Programming', 'Statistics & Applications', 'Linear Algebra', 'Calculus', 'Undergrad Research'].map((course) => (
+                    <Badge key={course} className="bg-purple-600/30 text-white border-purple-400/50">
+                      {course}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div className="mb-6">
+                <h4 className="text-lg font-semibold text-white mb-3">Leadership</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['Founder & President — Quantitative Computing & Research Society', 'Technical Head — Honors College Connection Project', 'Outreach Manager — Women\'s Global Club', 'Golf Club'].map((role) => (
+                    <Badge key={role} className="bg-indigo-600/30 text-white border-indigo-400/50">
+                      {role}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h4 className="text-lg font-semibold text-white mb-3">Awards & Recognition</h4>
+                <div className="flex flex-wrap gap-2">
+                  {['1st at MARCUS Research Conference', 'HackMIT Winner', 'KSU FinTech Winner', 'ImmerseGT Verbal Mention', '3 Published Papers in Bioinformatics', 'President\'s List'].map((award) => (
+                    <Badge key={award} className="bg-yellow-600/30 text-white border-yellow-400/50">
+                      <Award className="w-3 h-3 mr-1" />
+                      {award}
+                    </Badge>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Projects Section */}
+      <section className="relative py-24 px-4 md:px-8">
+        {/* Elegant section divider */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <div className="h-px w-32 bg-gradient-to-r from-transparent to-purple-400/50"></div>
+          <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+          <div className="h-px w-32 bg-gradient-to-l from-transparent to-purple-400/50"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <Code className="w-8 h-8 text-purple-400" />
+              <h2 className="text-4xl md:text-5xl font-bold text-white">Featured Projects</h2>
+            </div>
+            <p className="text-xl text-purple-200 mb-12">10+ award-winning projects across AI, healthcare, fintech, and more</p>
+
+            {/* Filter Buttons */}
+            <div className="flex flex-wrap gap-3 mb-12">
+              {filters.map((filter) => (
+                <Button
+                  key={filter.id}
+                  onClick={() => setActiveFilter(filter.id)}
+                  className={`transition-all duration-300 ${
+                    activeFilter === filter.id
+                      ? 'bg-purple-600 text-white hover:bg-purple-700'
+                      : 'bg-black/40 backdrop-blur-md text-white hover:bg-purple-600/20 border border-purple-400/30'
+                  }`}
+                >
+                  <Filter className="w-4 h-4 mr-2" />
+                  {filter.label}
+                </Button>
+              ))}
+            </div>
+
+            {/* Projects Grid */}
+            <motion.div 
+              layout
+              className="grid grid-cols-1 lg:grid-cols-2 gap-8"
+            >
+              {filteredProjects.map((project, index) => (
+                <ProjectCard key={project.title} project={project} index={index} />
+              ))}
+            </motion.div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Experience Section */}
+      <section className="relative py-24 px-4 md:px-8">
+        {/* Elegant section divider */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <div className="h-px w-32 bg-gradient-to-r from-transparent to-purple-400/50"></div>
+          <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+          <div className="h-px w-32 bg-gradient-to-l from-transparent to-purple-400/50"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="flex items-center gap-3 mb-12">
+              <Briefcase className="w-8 h-8 text-purple-400" />
+              <h2 className="text-4xl md:text-5xl font-bold text-white">Research Experience</h2>
+            </div>
+
+            <div className="space-y-8">
+              {experiences.map((experience, index) => (
+                <ExperienceCard key={experience.title} experience={experience} index={index} />
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Skills Section */}
+      <section className="relative py-24 px-4 md:px-8">
+        {/* Elegant section divider */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <div className="h-px w-32 bg-gradient-to-r from-transparent to-purple-400/50"></div>
+          <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+          <div className="h-px w-32 bg-gradient-to-l from-transparent to-purple-400/50"></div>
+        </div>
+        
+        <div className="max-w-7xl mx-auto">
+          <SkillsSection />
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section className="relative py-24 px-4 md:px-8">
+        {/* Elegant section divider */}
+        <div className="absolute top-0 left-1/2 transform -translate-x-1/2 flex items-center gap-2">
+          <div className="h-px w-32 bg-gradient-to-r from-transparent to-purple-400/50"></div>
+          <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+          <div className="h-px w-32 bg-gradient-to-l from-transparent to-purple-400/50"></div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">Let's Connect</h2>
+            <p className="text-xl text-purple-200 mb-12">
+              I'm always open to discussing new projects, creative ideas, or opportunities to be part of your vision.
+            </p>
+
+            <div className="bg-black/40 backdrop-blur-xl rounded-3xl p-8 md:p-12 border border-purple-500/20 shadow-2xl">
+              <div className="grid md:grid-cols-3 gap-6">
+                <a href="mailto:asinghal6@student.gsu.edu" className="group">
+                  <div className="bg-purple-600/10 hover:bg-purple-600/20 rounded-2xl p-6 transition-all duration-300 border border-purple-400/20 hover:border-purple-400/40 hover:scale-105">
+                    <Mail className="w-8 h-8 text-purple-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
+                    <p className="text-white font-medium">Email</p>
+                    <p className="text-purple-300 text-sm mt-2">asinghal6@student.gsu.edu</p>
+                  </div>
+                </a>
+
+                <a href="https://www.linkedin.com/in/aaditi-singhal-4b30b322b/" target="_blank" rel="noopener noreferrer" className="group">
+                  <div className="bg-purple-600/10 hover:bg-purple-600/20 rounded-2xl p-6 transition-all duration-300 border border-purple-400/20 hover:border-purple-400/40 hover:scale-105">
+                    <Linkedin className="w-8 h-8 text-purple-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
+                    <p className="text-white font-medium">LinkedIn</p>
+                    <p className="text-purple-300 text-sm mt-2">Connect with me</p>
+                  </div>
+                </a>
+
+                <a href="https://github.com/aaditisinghal" target="_blank" rel="noopener noreferrer" className="group">
+                  <div className="bg-purple-600/10 hover:bg-purple-600/20 rounded-2xl p-6 transition-all duration-300 border border-purple-400/20 hover:border-purple-400/40 hover:scale-105">
+                    <Github className="w-8 h-8 text-purple-400 mx-auto mb-4 group-hover:scale-110 transition-transform" />
+                    <p className="text-white font-medium">GitHub</p>
+                    <p className="text-purple-300 text-sm mt-2">View my code</p>
+                  </div>
+                </a>
+              </div>
+
+              <div className="mt-8 pt-8 border-t border-purple-500/20">
+                <p className="text-purple-200">
+                  <span className="font-semibold">Phone:</span> +1 (404) 423-8776
+                </p>
+                <p className="text-purple-200 mt-2">
+                  <span className="font-semibold">Location:</span> Atlanta, GA, USA
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="relative py-12 px-4 md:px-8 border-t border-purple-500/20">
+        <div className="max-w-7xl mx-auto text-center">
+          <p className="text-purple-300">
+            © 2025 Aaditi Singhal. Crafted with passion and code.
+          </p>
+        </div>
+      </footer>
+
+      <style jsx>{`
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1);
+          }
+        }
+        @keyframes blob-pulse {
+          0%, 100% {
+            transform: translate(0px, 0px) scale(1);
+            opacity: 0.1;
+          }
+          50% {
+            transform: translate(10px, -10px) scale(1.05);
+            opacity: 0.15;
+          }
+        }
+        @keyframes slow-drift {
+          0% {
+            transform: translate(0, 0) scale(1);
+          }
+          50% {
+            transform: translate(-20px, 20px) scale(1.05);
+          }
+          100% {
+            transform: translate(0, 0) scale(1);
+          }
+        }
+        @keyframes sparkle {
+          0%, 100% {
+            opacity: 0;
+            transform: scale(0);
+          }
+          50% {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+        @keyframes float-sparkle {
+          0% {
+            transform: translateY(100vh) translateX(0) rotate(0deg);
+          }
+          100% {
+            transform: translateY(-100vh) translateX(50px) rotate(360deg);
+          }
+        }
+        @keyframes float-orb {
+          0%, 100% {
+            transform: translateY(0) translateX(0);
+          }
+          25% {
+            transform: translateY(-30px) translateX(30px);
+          }
+          50% {
+            transform: translateY(-60px) translateX(-20px);
+          }
+          75% {
+            transform: translateY(-30px) translateX(-40px);
+          }
+        }
+        @keyframes pulse-slow {
+          0%, 100% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 0.6;
+          }
+        }
+        @keyframes corner-glow {
+          0%, 100% {
+            box-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+          }
+          50% {
+            box-shadow: 0 0 40px rgba(168, 85, 247, 0.6);
+          }
+        }
+        @keyframes shimmer {
+          0% {
+            left: -100%;
+          }
+          100% {
+            left: 100%;
+          }
+        }
+
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animate-blob-pulse {
+          animation: blob-pulse 8s ease-in-out infinite;
+        }
+        .animate-slow-drift {
+          animation: slow-drift 20s ease-in-out infinite;
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 3s ease-in-out infinite;
+        }
+        .animation-delay-500 {
+          animation-delay: 0.5s;
+        }
+        .animation-delay-1000 {
+          animation-delay: 1s;
+        }
+        .animation-delay-1500 {
+          animation-delay: 1.5s;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+        .sparkle {
+          position: absolute;
+          width: 3px;
+          height: 3px;
+          background: linear-gradient(45deg, #ffffff, #e0b3ff);
+          border-radius: 50%;
+          box-shadow: 0 0 10px #ffffff, 0 0 20px #e0b3ff, 0 0 30px rgba(168, 85, 247, 0.5);
+          animation: sparkle 3s ease-in-out infinite, float-sparkle 15s linear infinite;
+          animation-fill-mode: forwards;
+        }
+        ${[...Array(20)].map((_, i) => `
+          .sparkle-${i + 1} { 
+            top: ${Math.random() * 100}%; 
+            left: ${Math.random() * 100}%; 
+            animation-delay: ${Math.random() * 3}s; 
+            animation-duration: ${12 + Math.random() * 8}s;
+          }
+        `).join('')}
+        .orb {
+          position: absolute;
+          width: 200px;
+          height: 200px;
+          border-radius: 50%;
+          filter: blur(60px);
+          opacity: 0.15;
+          animation: float-orb 20s ease-in-out infinite;
+        }
+        .orb-1 {
+          background: radial-gradient(circle, rgba(168, 85, 247, 0.4) 0%, transparent 70%);
+          top: 20%;
+          left: 10%;
+          animation-duration: 25s;
+        }
+        .orb-2 {
+          background: radial-gradient(circle, rgba(236, 72, 153, 0.4) 0%, transparent 70%);
+          top: 60%;
+          right: 10%;
+          animation-duration: 30s;
+          animation-delay: 5s;
+        }
+        .orb-3 {
+          background: radial-gradient(circle, rgba(99, 102, 241, 0.4) 0%, transparent 70%);
+          bottom: 20%;
+          left: 50%;
+          animation-duration: 28s;
+          animation-delay: 10s;
+        }
+        .corner-ornament {
+          animation: corner-glow 3s ease-in-out infinite;
+        }
+        .ornamental-line {
+          position: relative;
+          overflow: hidden;
+        }
+        .ornamental-line::after {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+          animation: shimmer 3s ease-in-out infinite;
+        }
+      `}</style>
+    </div>
+  );
+}
